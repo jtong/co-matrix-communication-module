@@ -12,7 +12,7 @@
 
 body {
 
-    background:url("imgs/back.png") top left no-repeat;
+    background:url("../imgs/back.png") top left no-repeat;
     background-size: 100%;
     width: 100%;
     height: 100%;
@@ -21,14 +21,14 @@ body {
 }
 
 body:before {
-    content: url("imgs/snapshotselected.png") url("imgs/back.png") url('imgs/cursor.png') url('imgs/hand.png') url('imgs/brush.png') url("imgs/print.png") url("imgs/printselected.png") url("imgs/clear.png") url("imgs/clearselected.png") url("imgs/eraser.png") url("imgs/eraserselected.png") url("imgs/light.png") url("imgs/lightselected.png") url("imgs/medium.png") url("imgs/mediumselected.png") url("imgs/heavy.png") url("imgs/heavyselected.png");
+    content: url("../imgs/snapshotselected.png") url("../imgs/back.png") url('../imgs/cursor.png') url('../imgs/hand.png') url('../imgs/brush.png') url("../imgs/print.png") url("../imgs/printselected.png") url("../imgs/clear.png") url("../imgs/clearselected.png") url("../imgs/eraser.png") url("../imgs/eraserselected.png") url("../imgs/light.png") url("../imgs/lightselected.png") url("../imgs/medium.png") url("../imgs/mediumselected.png") url("../imgs/heavy.png") url("../imgs/heavyselected.png");
     display:none;
 }
 /*-------------------------
     Canvas & Cursors
 --------------------------*/
 .topbar{
-    background: url("imgs/top.png") top left no-repeat;
+    background: url("../imgs/top.png") top left no-repeat;
     background-size: 100%;
     height: 5.2%;
     width: 100%;
@@ -182,14 +182,14 @@ body:before {
     position: absolute;
     width: 21px;
     height: 25px;
-    background: url('imgs/cursor.png') no-repeat -4px 0;
+    background: url('../imgs/cursor.png') no-repeat -4px 0;
     z-index: 999;
 }
 .sign .hand {
     position: absolute;
     width: 23px;
     height: 22px;
-    background: url('imgs/hand.png') no-repeat -4px 0;
+    background: url('../imgs/hand.png') no-repeat -4px 0;
     z-index: 999;
 }
 
@@ -197,7 +197,7 @@ body:before {
     position: absolute;
     width: 22px;
     height: 24px;
-    background: url('imgs/brush.png') no-repeat -4px 0;
+    background: url('../imgs/brush.png') no-repeat -4px 0;
     z-index: 999;
 }
 
@@ -236,70 +236,70 @@ body:before {
 }
 
 .print{
-    background-image:url("imgs/print.png");
+    background-image:url("../imgs/print.png");
     background-size:100% 100%;
 }
 
 .print:active{
-    background-image:url("imgs/printselected.png");
+    background-image:url("../imgs/printselected.png");
 }
 
 .snapshot{
-    background-image: url("imgs/snapshot.png");
+    background-image: url("../imgs/snapshot.png");
     background-size: 100% 100%;
 }
 
 .snapshot:active{
-    background-image: url("imgs/snapshotselected.png");
+    background-image: url("../imgs/snapshotselected.png");
 }
 
 .clearscreen{
-    background-image:url("imgs/clear.png");
+    background-image:url("../imgs/clear.png");
     background-size:100% 100%;
 }
 
 .clearscreen:active{
-    background-image:url("imgs/clearselected.png");
+    background-image:url("../imgs/clearselected.png");
     background-size:100% 100%;
 }
 
 .eraser{
-    background-image:url("imgs/eraser.png");
+    background-image:url("../imgs/eraser.png");
     background-size:100% 100%;
 }
 
 .eraser.selected{
-    background-image:url("imgs/eraserselected.png");
+    background-image:url("../imgs/eraserselected.png");
     opacity: 0;
 }
 
 .light{
-    background-image:url("imgs/light.png");
+    background-image:url("../imgs/light.png");
     background-size:100% 100%;
 }
 
 .light.selected{
-    background-image:url("imgs/lightselected.png");
+    background-image:url("../imgs/lightselected.png");
     opacity: 0;
 }
 
 .medium{
-    background-image:url("imgs/medium.png");
+    background-image:url("../imgs/medium.png");
     background-size:100% 100%;
 }
 
 .medium.selected{
-    background-image:url("imgs/mediumselected.png");
+    background-image:url("../imgs/mediumselected.png");
     opacity: 0;
 }
 
 .heavy{
-    background-image:url("imgs/heavy.png");
+    background-image:url("../imgs/heavy.png");
     background-size:100% 100%;
 }
 
 .heavy.selected{
-    background-image:url("imgs/heavyselected.png");
+    background-image:url("../imgs/heavyselected.png");
     opacity: 0;
 }
 

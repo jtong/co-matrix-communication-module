@@ -259,7 +259,7 @@ $(function(){
 
     // control stick
     socket.on('drawing',function (data) {
-      if(data < 60){    
+      if(data < 60){
         if (data==49)
         {
           drawColor = "rgba(232,78,55,1)";
@@ -314,7 +314,7 @@ $(function(){
         type: 'color',
         color: 'magenta',
         onFound: function(track) {
-    
+
           // if (notenow) {
 
             var size = 60 - track.z;
@@ -323,7 +323,7 @@ $(function(){
             ctx.strokeRect(track.x - size*0.5, track.y - size*0.5, size, size);
             trackX=track.x - size*0.5 + 2;
             trackY=track.y - size*0.5 + 2;
-            trackSize = size - 4;     
+            trackSize = size - 4;
           // }
 
           ctx3.beginPath();
@@ -341,7 +341,7 @@ $(function(){
             }
           if (pandrawing) {
             drawSegments[segment].push(track.x,track.y);
-            
+
           }
           else if (!pandrawing) {
             drawSegments[segment]=[];
@@ -362,7 +362,7 @@ $(function(){
 
           prevx = track.x;
           prevy = track.y;
-         
+
 
             if (!pencilFound) {
                 selectedElement.className = 'pencil';
@@ -373,7 +373,7 @@ $(function(){
 
 
             lastEmit = $.now();
-          
+
         },
         onNotFound: function() {
 
@@ -396,7 +396,7 @@ $(function(){
             lastEmit = $.now();
         }
 
-        
+
     });
 
 
@@ -442,7 +442,7 @@ $(function(){
         var cp=[];   // array of control points, as x0,y0,x1,y1,...
         var n=pts.length;
 
-        
+
         // Draw an open curve, not connected at the ends
         for(var i=0;i<n-4;i+=2){
             cp=cp.concat(getControlPoints(pts[i],pts[i+1],pts[i+2],pts[i+3],pts[i+4],pts[i+5],t));
@@ -735,9 +735,9 @@ $(function(){
     //** remote control stick
     socket.on('color', function (data) {
         // Create cursor
-        
+
         // Set the starting point to where the user first touched
-  
+
 
         ctx3.beginPath();
         ctx3.clearRect(data.prevx - 4 - 1, data.prevy - 4- 1, 4 * 2 + 2, 4 * 2 + 2);
@@ -756,8 +756,8 @@ $(function(){
                     }
                     requestAnimationFrame(loop);
                 }());
-      
-        
+
+
 
         // Save state
         // clients[data.id] = data;
