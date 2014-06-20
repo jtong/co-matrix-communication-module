@@ -161,10 +161,6 @@ $(function(){
     // $('#paper').attr('height',$( document ).height()*0.84);      
     var ctx2 = canvas2[0].getContext('2d');
 
-    var canvas3 = $('#dot');
-    // $('#dot').attr('width', $( document ).width()*0.96);
-    // $('#dot').attr('height',$( document ).height()*0.84);      
-    var ctx3 = canvas3[0].getContext('2d');
 
     var id = Math.round($.now() * Math.random()); // Generate a unique ID
     var drawing = false; // A flag for drawing activity
@@ -257,227 +253,25 @@ $(function(){
     });
     // init over
 
-    // control stick
-    socket.on('drawing',function (data) {
-      if(data < 60){
-        if (data==49)
-        {
-          drawColor = "rgba(232,78,55,1)";
-        }else if(data == 50){
-          drawColor = "rgba(232,218,143,1)";
-        }else if (data == 51) {
-          drawColor = "rgba(99,207,232,1)";
-        }else if (data == 52) {
-          drawColor = "rgba(232,157,94,1)";
-        }else if (data == 53) {
-          drawColor = "rgba(103,207,252,1)";
-        }else if (data ==54) {
-          drawColor = "rgba(80,232,151,1)";
-        }else if (data == 55) {
-          drawColor = "rgba(255,151,157,1)";
-        }else if (data == 56) {
-          drawColor = "rgba(116,150,255,1)";
-        }
-      }
 
-        else if(data == 100) {
-            pandrawing = true;
-            notenow = false;
-        }else if(data == 101){
-            pandrawing = false;
-            notenow = false;
-        }else if(data == 99){
-            ctx2.clearRect(0,0, $( document ).width(), $( document ).height());
-            ctx1.clearRect(0,0, $( document ).width(), $( document ).height());
-        }
-    });
-    //***stick over
 
-    // videoCamera.track({
-    //     type: 'color',
-    //     color: 'magenta',
-    //     onFound: function(track) {
-    //         var size = 60 - track.z;
-    //         ctx.strokeStyle = "rgb(255,226,83)";
-    //         ctx.lineWidth = 2;
-    //         ctx.strokeRect(track.x - size*0.5, track.y - size*0.5, size, size);
-    //         trackX=track.x - size*0.5 + 2;
-    //         trackY=track.y - size*0.5 + 2;
-    //         trackSize = size - 4;            
-    //     }
-    //   });
+    videoCamera.track({
+         type: 'color',
+         color: 'magenta',
+         onFound: function(track) {
+//             var size = 60 - track.z;
+//             ctx.strokeStyle = "rgb(255,226,83)";
+//             ctx.lineWidth = 2;
+//             ctx.strokeRect(track.x - size*0.5, track.y - size*0.5, size, size);
+//             trackX=track.x - size*0.5 + 2;
+//             trackY=track.y - size*0.5 + 2;
+//             trackSize = size - 4;
+         }
+       });
 
      $('.localavatar').addClass('pulse');
-     
-     //** control stick draw **//
-     videoCamera.track({
-        type: 'color',
-        color: 'magenta',
-        onFound: function(track) {
-
-          // if (notenow) {
-
-            var size = 60 - track.z;
-            ctx.strokeStyle = "rgb(255,226,83)";
-            ctx.lineWidth = 2;
-            ctx.strokeRect(track.x - size*0.5, track.y - size*0.5, size, size);
-            trackX=track.x - size*0.5 + 2;
-            trackY=track.y - size*0.5 + 2;
-            trackSize = size - 4;
-          // }
-
-          ctx3.beginPath();
-          ctx3.clearRect(prevx - 4 - 1, prevy - 4 - 1, 4 * 2 + 2, 4 * 2 + 2);
-          ctx3.closePath();
-
-          ctx3.fillStyle = drawColor;
-          ctx3.beginPath();
-          ctx3.arc(track.x,track.y,4,0,Math.PI*2,true);
-          ctx3.closePath();
-          ctx3.fill();
-
-          if (!drawSegments[segment]) {
-                drawSegments[segment]= [];
-            }
-          if (pandrawing) {
-            drawSegments[segment].push(track.x,track.y);
-
-          }
-          else if (!pandrawing) {
-            drawSegments[segment]=[];
-          }
-
-          socket.emit('catching', {
-              'drawSegments': drawSegments,
-              'trackX': track.x,
-              'trackY': track.y,
-              'prevx': prevx,
-              'prevy': prevy,
-              'drawColor': drawColor,
-              'x': ((640-track.x)/640)*$(document).width()*0.68+$(document).width()*0.28,
-              'y': (track.y/480)*$( document ).height()*0.9,
-              'pandrawing': pandrawing,
-              'id': id
-          });
-
-          prevx = track.x;
-          prevy = track.y;
 
 
-            if (!pencilFound) {
-                selectedElement.className = 'pencil';
-            }
-
-            pencilFound = true;
-
-
-
-            lastEmit = $.now();
-
-        },
-        onNotFound: function() {
-
-            if (pencilFound) {
-                // segment++;
-                drawSegments[segment]=[];
-                pencilFound = false;
-                selectedElement.className = '';
-            }
-
-            ctx3.beginPath();
-            ctx3.clearRect(prevx - 4 - 1, prevy - 4 - 1, 4 * 2 + 2, 4 * 2 + 2);
-            ctx3.closePath();
-
-            // socket.emit('catching', {
-            //   'drawSegments': drawSegments,
-            //   'drawColor': drawColor,
-            //   'id': id
-            // });
-            lastEmit = $.now();
-        }
-
-
-    });
-
-
-      (function loop() {
-          for (var i = 0, len = drawSegments.length; i < len; i++) {
-              drawSpline(ctx2, drawColor, drawSegments[i], 0.5, false);
-              // videoCamera.canvas.context
-          }
-          requestAnimationFrame(loop);
-      }());
-
-
-    function getControlPoints(x0,y0,x1,y1,x2,y2,t){
-        //  x0,y0,x1,y1 are the coordinates of the end (knot) pts of this segment
-        //  x2,y2 is the next knot -- not connected here but needed to calculate p2
-        //  p1 is the control point calculated here, from x1 back toward x0.
-        //  p2 is the next control point, calculated here and returned to become the
-        //  next segment's p1.
-        //  t is the 'tension' which controls how far the control points spread.
-
-        //  Scaling factors: distances from this knot to the previous and following knots.
-        var d01=Math.sqrt(Math.pow(x1-x0,2)+Math.pow(y1-y0,2));
-        var d12=Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
-
-        var fa=t*d01/(d01+d12);
-        var fb=t-fa;
-
-        var p1x=x1+fa*(x0-x2);
-        var p1y=y1+fa*(y0-y2);
-
-        var p2x=x1-fb*(x0-x2);
-        var p2y=y1-fb*(y0-y2);
-
-        return [p1x,p1y,p2x,p2y]
-    }
-
-    function drawSpline(ctx,dwColor,pts,t){
-
-
-        // showDetails=true;
-        ctx.lineWidth=1;
-        ctx.save();
-        var cp=[];   // array of control points, as x0,y0,x1,y1,...
-        var n=pts.length;
-
-
-        // Draw an open curve, not connected at the ends
-        for(var i=0;i<n-4;i+=2){
-            cp=cp.concat(getControlPoints(pts[i],pts[i+1],pts[i+2],pts[i+3],pts[i+4],pts[i+5],t));
-        }
-        for(var i=2;i<pts.length-5;i+=2){
-            // var color="rgba(232,78,55,0.9)";
-            // if(!showDetails){color="#82CDFF";}
-            ctx.strokeStyle=dwColor;
-            ctx.beginPath();
-            ctx.moveTo(pts[i],pts[i+1]);
-            ctx.bezierCurveTo(cp[2*i-2],cp[2*i-1],cp[2*i],cp[2*i+1],pts[i+2],pts[i+3]);
-            ctx.stroke();
-            ctx.closePath();
-        }
-
-        ctx.strokeStyle=dwColor;
-        ctx.beginPath();
-        ctx.moveTo(pts[0],pts[1]);
-        ctx.quadraticCurveTo(cp[0],cp[1],pts[2],pts[3]);
-        ctx.stroke();
-        ctx.closePath();
-
-
-        ctx.strokeStyle=dwColor;
-        ctx.beginPath();
-        ctx.moveTo(pts[n-2],pts[n-1]);
-        ctx.quadraticCurveTo(cp[2*n-10],cp[2*n-9],pts[n-4],pts[n-3]);
-        ctx.stroke();
-        ctx.closePath();
-
-
-        ctx.restore();
-
-    }
-    //**  control stick draw over
 
     //** mouse draw **//
     function drawLine(ctx, lineWidth, color, fromx, fromy, tox, toy)
@@ -727,42 +521,6 @@ $(function(){
 
   });
 
-    // $('#clearscreen').click(function() {
-
-    //   $('#note').children().remove();
-
-    // });
-    //** remote control stick
-    socket.on('color', function (data) {
-        // Create cursor
-
-        // Set the starting point to where the user first touched
-
-
-        ctx3.beginPath();
-        ctx3.clearRect(data.prevx - 4 - 1, data.prevy - 4- 1, 4 * 2 + 2, 4 * 2 + 2);
-        ctx3.closePath();
-
-        ctx3.fillStyle = data.drawColor;
-        ctx3.beginPath();
-        ctx3.arc(data.trackX,data.trackY,4,0,Math.PI*2,true);
-        ctx3.closePath();
-        ctx3.fill();
-        // Show drawing
-            // clients[data.id] holds the previous position of this user's mouse pointer
-                (function loop() {
-                    for (var i = 0, len = data.drawSegments.length; i < len; i++) {
-                        drawSpline(ctx2,data.drawColor,data.drawSegments[i], 0.5, false);
-                    }
-                    requestAnimationFrame(loop);
-                }());
-
-
-
-        // Save state
-        // clients[data.id] = data;
-        // clients[data.id].updated = $.now();
-    });
 
     //** remote ticket
     socket.on('note', function (data) {
