@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Co-Matrix Meeting</title>
+        <meta name="viewport" content="width=1440">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" type="text/css" href="screen.css">
+        <link rel="stylesheet" type="text/css" href="animation.css">
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <div class="topbar"></div>
+        
+        <div class="sign"></div>
+
+        <img class="localavatar" src="imgs/avatar1.png"/>
+        <img class="nexticon nexticon1" src="imgs/nexticon.png"/>
+        <img class="nexticon nexticon2" src="imgs/nexticon.png"/>
+        <img class="nexticon nexticon3" src="imgs/nexticon.png"/>
+        <img class="remoteavatar" src="imgs/avatar2.png"/>
+        <div class="clock">
+            <ul id="time">
+                <li id="hours"></li>
+                <li id="point">:</li>
+                <li id="min"></li>
+            </ul>
+            <div class="day">
+                <div id="Weekday"></div>
+                <div id="Date"></div>
+            </div>
+        </div>
+
+
+        <div id="selected"></div>
+        <canvas id="paper1"></canvas>
+        <canvas id="paper" width="640" height="480"></canvas>
+        <canvas id="dot" width="640" height="480"></canvas>
+    
+
+        <img class="infoimage" src="imgs/wearable.png"/>
+        <img class="talking" src="imgs/talking.png"/>
+
+        <div class="remoteclock">
+            <ul id="time">
+                <li id="remotehours"></li>
+                <li id="point">:</li>
+                <li id="remotemin"></li>
+            </ul>
+            <div class="day">
+                <div id="remoteWeekday"></div>
+                <div id="remoteDate"></div>
+            </div>
+        </div>
+        <video id="webrtc-remotevid" autoplay></video>
+        <div id="temp"></div>
+        <div id="temp2"></div>
+        <canvas id="remotecan" width="640" height="480"></canvas>
+        <div id="note"></div>
+        <div class='toolbar'>
+            <div class="menu">
+                <div class="print"></div>
+                <div class="snapshot"></div>
+                <div class="clearscreen"></div>
+                <div class="eraser"></div>
+                <div class="light"></div>
+                <div class="medium"></div>
+                <div class="heavy"></div>
+            </div>
+            <div class="color">
+                <div class="color1"></div>
+                <div class="color2"></div>
+                <div class="color3"></div>
+                <div class="color4"></div>
+                <div class="color5"></div>
+                <div class="notenum"></div>
+            </div>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="tracking.js"></script>
+        <script src="color.js"></script>
+        <script src="lib/jquery-1.10.2.min.js"></script>
+<!--        <script src="lib/jquery-ui-1.10.3.min.js"></script>   -->
+        <script src="lib/jquery.event.drag-2.2.js"></script>
+        <script src="client.js"></script>
+        
+    </body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "muiltidraw",
+  "subdomain": "youngjacky-muiltidraw",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "version": "0.1.0-6",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "dependencies": {
+    "socket.io": "*",
+    "node-static": "*"
+  }
+}
