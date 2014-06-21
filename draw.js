@@ -1,5 +1,5 @@
 
-function mouse_draw(){
+function mouse_draw(socket){
     //**** init canvas   **//
     var canvas1 = $('#paper1');
     $('#paper1').attr('width', $( document ).width()*0.96);
