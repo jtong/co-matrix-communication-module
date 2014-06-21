@@ -8,14 +8,10 @@ var channelReady = false;
 var mediaConstraints = {'mandatory': {
                       'OfferToReceiveAudio':true, 
                       'OfferToReceiveVideo':true }};
-var isVideoMuted = true;
 
 var videoCamera = new tracking.VideoCamera().hide().render().renderVideoCanvas();
 var ctx = videoCamera.canvas.context,
 trackX,trackY,trackSize;
-
-// var canvas = document.getElementById('paper');
-// var ctx0 = canvas.getContext('2d');
 
 // web rtc
 var video=document.getElementById("webrtc-remotevid");
@@ -23,8 +19,6 @@ var remotecan=document.getElementById("remotecan");
 var remotectx=remotecan.getContext('2d');
 
 video.addEventListener('play', function() {
-// var i=window.setInterval(function() {
-//   remotectx.drawImage(video,0,0,640,480)},5);
 var $this = this;
 (function loop() {
   remotectx.drawImage($this,0,0,640,480);
@@ -132,7 +126,6 @@ console.log('Adding local stream...');
 console.log(localStream);
 peerConn.addStream(localStream);
 
-// peerConn.addStream(localScreen);
 
 peerConn.addEventListener("addstream", onRemoteStreamAdded, false);
 
@@ -153,18 +146,15 @@ $(function(){
   //**** init canvas   **//
     var canvas1 = $('#paper1');
     $('#paper1').attr('width', $( document ).width()*0.96);
-    $('#paper1').attr('height',$( document ).height()*0.84);      
+    $('#paper1').attr('height',$( document ).height()*0.84);
     var ctx1 = canvas1[0].getContext('2d');
 
     var canvas2 = $('#paper');
-    // $('#paper').attr('width', $( document ).width()*0.96);
-    // $('#paper').attr('height',$( document ).height()*0.84);      
     var ctx2 = canvas2[0].getContext('2d');
 
 
     var id = Math.round($.now() * Math.random()); // Generate a unique ID
     var drawing = false; // A flag for drawing activity
-    var pandrawing = false;
     var clients = {};
     var sign = {};
     var prev = {}; // Previous coordinates container
@@ -173,16 +163,6 @@ $(function(){
     var lineWidth = 2;
     var eraserSelected = false;
     var erase = false;
-    var notenow = true;
-
-    var drawSegments = [],
-        eraseFound = false,
-        pencilFound = false,
-        segment = 0,
-        selectedElement = document.getElementById('selected');
-
-    var drawColor = "rgba(232,78,55,1)";
-    var prevx,prevy;
 
     $('.color1').addClass('selected');
     $('.light').addClass('selected');
@@ -230,9 +210,7 @@ $(function(){
 
 
     $('.print').click(function () {
-        // $('.menu').children().removeClass('selectmenu');
-        // $(this).addClass('selectmenu');
-        window.print(); 
+        window.print();
     });
 
 
@@ -240,7 +218,6 @@ $(function(){
     $('.clearscreen').click(function() {
         ctx1.clearRect(0, 0, $( document ).width(), $( document ).height());
         ctx2.clearRect(0, 0, $( document ).width(), $( document ).height());
-        // $('.light').selected()
     });
 
 
@@ -285,7 +262,7 @@ $(function(){
         ctx.stroke();
     }
 
-    
+
     // On mouse down
     canvas1.on('mousedown', function(e) {
         e.preventDefault();
@@ -330,7 +307,7 @@ $(function(){
             });
             lastEmit = $.now();
         // }
-        
+
         // Draw a line for the current user's movement
         if (drawing)
         {
@@ -366,7 +343,7 @@ $(function(){
             });
             lastEmit = $.now();
         // }
-        
+
         // Draw a line for the current user's movement
         if (drawing)
         {
@@ -403,22 +380,22 @@ $(function(){
         {
             sign[data.id] = $('<div class="cursor">').appendTo('.sign');
         }
-        
+
         // Move cursor
         sign[data.id].css({
             'left' : data.x*$('#paper1').width(), //因为pad和pc屏幕不一样，所以用百分比通信
             'top' : data.y*$('#paper1').height()
         });
-        
 
-       
+
+
         // Show drawing
         if (data.drawing && clients[data.id])
         {
             // clients[data.id] holds the previous position of this user's mouse pointer
             drawLine(ctx1, data.lineWidth, data.lineColor, clients[data.id].x*$('#paper1').width(), clients[data.id].y*$('#paper1').height(), data.x*$('#paper1').width(), data.y*$('#paper1').height());
         }
-        
+
         // Save state
         clients[data.id] = data;
         clients[data.id].updated = $.now();
@@ -431,13 +408,13 @@ $(function(){
         {
             sign[data.id] = $('<div class="hand">').appendTo('.sign');
         }
-        
+
         // Move cursor
         sign[data.id].css({
             'left' : data.x*$('#paper1').width(),
             'top' : data.y*$('#paper1').height()
         });
-        
+
         // Set the starting point to where the user first touched
         if (data.drawing && clients[data.id] && data.touch)
         {
@@ -451,9 +428,9 @@ $(function(){
             // clients[data.id] holds the previous position of this user's mouse pointer
             drawLine(ctx1, data.lineWidth, data.lineColor, clients[data.id].x, clients[data.id].y, data.x*$('#paper1').width(), data.y*$('#paper1').height());
         }
-        
+
         // Save state
-        clients[data.id] = data;  
+        clients[data.id] = data;
         clients[data.id].updated = $.now();
     });
     //remote mouse move over
