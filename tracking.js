@@ -583,7 +583,6 @@ VideoCamera.prototype = {
     defSuccessHandler_: function (stream) {
         var instance = this;
 
-        localStream = stream;
 
         
 

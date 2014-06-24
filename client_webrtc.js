@@ -9,9 +9,19 @@ var mediaConstraints = {'mandatory': {
     'OfferToReceiveAudio':true,
     'OfferToReceiveVideo':true }};
 
-var videoCamera = new tracking.VideoCamera().hide().render().renderVideoCanvas();
+
+
+
+var videoCamera = new tracking.VideoCamera({audio:false}).hide().render().renderVideoCanvas();
 var ctx = videoCamera.canvas.context,
     trackX,trackY,trackSize;
+navigator.webkitGetUserMedia({audio:true, video:true},
+    function(stream){
+        window.localStream = stream
+    },
+    function(error){
+        console.log("不支持媒体流～ ", error);
+    });
 
 // web rtc
 var video=document.getElementById("webrtc-remotevid");
@@ -42,6 +52,7 @@ function createOfferFailed() {
 // function connectvid() {
 
 socket.on('logNow',function(){
+
     console.log(localStream);
     if (!started && localStream && channelReady) {
         createPeerConnection();
