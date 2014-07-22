@@ -68,7 +68,19 @@ body:before {
     left: 7.3%;
     -webkit-filter:saturate(1.2);
     -webkit-filter:contrast(1.2);
-    
+
+}
+
+#localvid {
+    -webkit-transform: scaleX(-1);
+    position: absolute;
+    z-index: 999;
+    height: 21.8%;
+    top:18%;
+    left: 0;
+    -webkit-filter:saturate(1.2);
+    -webkit-filter:contrast(1.2);
+
 }
 
 

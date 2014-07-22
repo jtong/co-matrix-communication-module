@@ -12,11 +12,15 @@ var mediaConstraints = {'mandatory': {
 
 
 
-var videoCamera = new tracking.VideoCamera({audio:false}).hide().render().renderVideoCanvas();
+var videoCamera = new tracking.VideoCamera({audio:false}).render().renderVideoCanvas();
 var ctx = videoCamera.canvas.context,
     trackX,trackY,trackSize;
+//var localVideo = document.getElementById("localVideo");
+
 navigator.webkitGetUserMedia({audio:true, video:true},
     function(stream){
+//        var url = webkitURL.createObjectURL(stream);
+//        localVideo.style.opacity = 1; localVideo.src = url;
         window.localStream = stream
     },
     function(error){
