@@ -75,9 +75,8 @@ body:before {
     -webkit-transform: scaleX(-1);
     position: absolute;
     z-index: 999;
-    height: 21.8%;
-    top:18%;
-    left: 0;
+    left: 6.5%;
+    top:13%;
     -webkit-filter:saturate(1.2);
     -webkit-filter:contrast(1.2);
 

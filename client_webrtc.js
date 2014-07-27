@@ -12,7 +12,7 @@ var mediaConstraints = {'mandatory': {
 
 
 
-var videoCamera = new tracking.VideoCamera({audio:false}).render().renderVideoCanvas();
+var videoCamera = new tracking.VideoCamera({audio:false,controls: false,width:220, height:240}).render().renderVideoCanvas();
 var ctx = videoCamera.canvas.context,
     trackX,trackY,trackSize;
 //var localVideo = document.getElementById("localVideo");
