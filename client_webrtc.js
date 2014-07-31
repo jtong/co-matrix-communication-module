@@ -18,15 +18,7 @@ var mediaConstraints = {'mandatory': {
 //    trackX,trackY,trackSize;
 //var localVideo = document.getElementById("localVideo");
 
-navigator.webkitGetUserMedia({audio:true, video:true},
-    function(stream){
-//        var url = webkitURL.createObjectURL(stream);
-//        localVideo.style.opacity = 1; localVideo.src = url;
-        window.localStream = stream
-    },
-    function(error){
-        console.log("不支持媒体流～ ", error);
-    });
+
 
 // web rtc
 var video=document.getElementById("webrtc-remotevid");

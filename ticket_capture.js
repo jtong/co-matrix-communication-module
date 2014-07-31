@@ -1,3 +1,4 @@
+
 function ticket_capture(ctx,remotectx,trackX, trackY,trackSize) {
 // 抓便签纸
     $('.snapshot').click(function () {

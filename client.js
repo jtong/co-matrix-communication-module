@@ -1,10 +1,22 @@
 //include client_webrtc.js first
 
-
+window.capture_image = false;
 
 $(function(){
 
 
+
+    navigator.webkitGetUserMedia({audio:true, video:true},
+        function(stream){
+//        var url = webkitURL.createObjectURL(stream);
+//        localVideo.style.opacity = 1; localVideo.src = url;
+            window.localStream = stream;
+            socket.emit('logined',true);
+
+        },
+        function(error){
+            console.log("不支持媒体流～ ", error);
+        });
 
     var canvas = document.getElementById('local-track-canvas');
     var context = canvas.getContext('2d');
@@ -17,36 +29,23 @@ $(function(){
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         event.data.forEach(function(rect) {
-            if (rect.color === 'custom') {
-                rect.color = tracker.customColor;
+            if (rect.color === 'cyan') {
+                context.strokeStyle = rect.color;
+                context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+                if(window.capture_image){
+                    window.capture_image = false;
+                    captureImage( rect.x, rect.y, rect.width, rect.height);
+                }
             }
-
-            context.strokeStyle = rect.color;
-            context.strokeRect(rect.x, rect.y, rect.width, rect.height);
-//            context.font = '11px Helvetica';
-//            context.fillStyle = "#fff";
-//            context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
-//            context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
         });
     });
 
     initGUIControllers(tracker);
 
 
-//    videoCamera.track({
-//         type: 'color',
-//         color: 'magenta',
-//         onFound: function(track) {
-////             var size = 60 - track.z;
-////             ctx.strokeStyle = "rgb(255,226,83)";
-////             ctx.lineWidth = 2;
-////             ctx.strokeRect(track.x - size*0.5, track.y - size*0.5, size, size);
-////             trackX=track.x - size*0.5 + 2;
-////             trackY=track.y - size*0.5 + 2;
-////             trackSize = size - 4;
-//         }
-//       });
-
+    $('.snapshot').click(function () {
+       window.capture_image = true;
+    });
      $('.localavatar').addClass('pulse');
 
 
@@ -67,6 +66,42 @@ $(function(){
 //    ticket_capture(ctx,remotectx,trackX, trackY, trackSize);
     date_time();
 });
+var scale = 4;
+var captureImage = function(x, y, width,height) {
+    console.log("capture");
+    var local_video = document.getElementById("localvid")
+    var whole_picture_canvas = document.createElement("canvas");
+    whole_picture_canvas.id="aa"
+    whole_picture_canvas.width = local_video.videoWidth;
+    whole_picture_canvas.height = local_video.videoHeight;
+    var context = whole_picture_canvas.getContext('2d');
+    context.drawImage(local_video,0,0,whole_picture_canvas.width, whole_picture_canvas.height);
+
+    var captured_canvas = document.createElement("canvas");
+    captured_canvas.width=width*2;
+    captured_canvas.height = height*2;
+    console.log(x,y,width,height);
+    var imageData = whole_picture_canvas.getContext('2d').getImageData(x*2, y*2,width*2,height*2)
+    captured_canvas.getContext('2d').putImageData(imageData,0,0);
+
+    var img = document.createElement("img");
+    img.src = captured_canvas.toDataURL();
+    $('body').prepend(img);
+//    $('body').prepend(whole_picture_canvas);
+//    $('body').prepend(captured_canvas);
+};
+
+function capture_1(id,x, y, width,height){
+    var captured_canvas = document.createElement("canvas");
+    var whole_picture_canvas = document.getElementById(id)
+    captured_canvas.width=width;
+    captured_canvas.height = height;
+    var imageData = whole_picture_canvas.getContext('2d').getImageData(x,y,width,height)
+    captured_canvas.getContext('2d').putImageData(imageData,0,0);
+    var img = document.createElement("img");
+    img.src = captured_canvas.toDataURL();
+    $('body').prepend(img);
+}
 
 function initGUIControllers(tracker) {
     // GUI Controllers
@@ -79,62 +114,17 @@ function initGUIControllers(tracker) {
         trackedColors[color] = true;
     });
 
-    tracker.customColor = '#000000';
 
-    function createCustomColor(value) {
-        var components = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec("#39afb6");
-        var customColorR = parseInt(components[1], 16);
-        var customColorG = parseInt(components[2], 16);
-        var customColorB = parseInt(components[3], 16);
+    var colors = [];
 
-        var colorTotal = customColorR + customColorG + customColorB;
-
-        if (colorTotal === 0) {
-            tracking.ColorTracker.registerColor('custom', function(r, g, b) {
-                return r + g + b < 10;
-            });
-        } else {
-            var rRatio = customColorR / colorTotal;
-            var gRatio = customColorG / colorTotal;
-
-            tracking.ColorTracker.registerColor('custom', function(r, g, b) {
-                var colorTotal2 = r + g + b;
-
-                if (colorTotal2 === 0) {
-                    if (colorTotal < 10) {
-                        return true;
-                    }
-                    return false;
-                }
-
-                var rRatio2 = r / colorTotal2,
-                    gRatio2 = g / colorTotal2,
-                    deltaColorTotal = colorTotal / colorTotal2,
-                    deltaR = rRatio / rRatio2,
-                    deltaG = gRatio / gRatio2;
-
-                return deltaColorTotal > 0.9 && deltaColorTotal < 1.1 &&
-                       deltaR > 0.9 && deltaR < 1.1 &&
-                       deltaG > 0.9 && deltaG < 1.1;
-            });
+    for (var color in trackedColors) {
+        if (trackedColors[color]) {
+            colors.push(color);
         }
-
-        updateColors();
     }
 
-    function updateColors() {
-        var colors = [];
-
-        for (var color in trackedColors) {
-            if (trackedColors[color]) {
-                colors.push(color);
-            }
-        }
-
-        tracker.setColors(colors);
-    }
+    tracker.setColors(colors);
 
 
 
-    createCustomColor();
 }
