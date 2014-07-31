@@ -64,6 +64,35 @@ $(function(){
 
     });
 //    ticket_capture(ctx,remotectx,trackX, trackY, trackSize);
+    socket.on('note', function (data) {
+        var img = document.createElement("img");
+        var canvasID = 'canvas' + $('canvas').length;
+        img.id = canvasID;
+        img.src = data;
+        $('body').prepend(img);
+//    $('body').prepend(whole_picture_canvas);
+//    $('body').prepend(captured_canvas);
+
+        var $div = $('#note');
+        $('#' + canvasID)
+            .drag("start", function (ev, dd) {
+                dd.limit = $div.offset();
+                dd.limit.bottom = dd.limit.top + $div.outerHeight() - $(this).outerHeight();
+                dd.limit.right = dd.limit.left + $div.outerWidth() - $(this).outerWidth();
+            })
+            .drag(function (ev, dd) {
+                $(this).css({
+                    top: Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)),
+                    left: Math.min(dd.limit.right, Math.max(dd.limit.left, dd.offsetX))
+                });
+            });
+        $('#' + canvasID).css('cursor', 'move');
+        $('#' + canvasID).css('position', 'absolute');
+        $('#' + canvasID).css('z-index', '998');
+        $('#' + canvasID).css('left', $div.css('left'));
+        $('#' + canvasID).css('top', $div.css('top'));
+        $('#' + canvasID).css('border-radius', '10px');
+    });
     date_time();
 });
 var scale = 4;
@@ -111,8 +140,11 @@ var captureImage = function(x, y, width,height) {
     $('#' + canvasID).css('left', ((640 - x*2 - width*2) / 640) * $(document).width() * 0.68 + $(document).width() * 0.28 + 'px');
     $('#' + canvasID).css('top', (y*2 / 480) * $(document).height() * 0.9 + 'px');
     $('#' + canvasID).css('border-radius', '10px');
+    console.log(captured_canvas.toDataURL())
+    socket.emit('note', captured_canvas.toDataURL());
 
 };
+
 
 
 
