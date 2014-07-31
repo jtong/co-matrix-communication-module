@@ -54,7 +54,10 @@
             </div>
         </div>
         <video id="webrtc-remotevid" autoplay></video>
-        <div id="temp"></div>
+        <div id="temp">
+          <video id="localvid" width="320" height="240" preload autoplay loop muted  ></video>
+          <canvas id="local-track-canvas" width="320" height="240"></canvas>
+        </div>
         <div id="temp2"></div>
         <canvas id="remotecan" width="640" height="480"></canvas>
         <div id="note"></div>
@@ -78,13 +81,13 @@
             </div>
         </div>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="tracking.js"></script>
-        <script src="lib/color.js"></script>
+        <script src="lib/tracking-min.js"></script>
+        <!--<script src="lib/color.js"></script>-->
         <script src="lib/jquery-1.10.2.min.js"></script>
 <!--        <script src="lib/jquery-ui-1.10.3.min.js"></script>   -->
         <script src="lib/jquery.event.drag-2.2.js"></script>
         <script src="date_time.js"></script>
-        <script src="ticket_capture.js"></script>
+        <!--<script src="ticket_capture.js"></script>-->
         <script src="draw.js"></script>
 
         <script src="client_webrtc.js"></script>

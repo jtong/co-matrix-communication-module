@@ -72,16 +72,19 @@ body:before {
 
 }
 
-#localvid {
-    -webkit-transform: scaleX(-1);
+#localvid, #local-track-canvas {
+    /*-webkit-transform: scaleX(-1);*/
     position: absolute;
-    z-index: 999;
-    left: 7%;
-    top: 4%;
-    -webkit-filter:saturate(1.2);
-    -webkit-filter:contrast(1.2);
+    display:block;
+    /*width: 640px;*/
+    /*height: 480px;*/
+    /*-webkit-filter:saturate(1.2);*/
+    /*-webkit-filter:contrast(1.2);*/
+    /*background-color: #39afb6;*/
 
 }
+
+
 
 
 
@@ -129,6 +132,7 @@ body:before {
     height: 85.8%;
     z-index: 998;
     top: 12.9%;
+    left: 0%;
 }
 
 #temp2{
