@@ -68,7 +68,6 @@ $(function(){
 });
 var scale = 4;
 var captureImage = function(x, y, width,height) {
-    console.log("capture");
     var local_video = document.getElementById("localvid")
     var whole_picture_canvas = document.createElement("canvas");
     whole_picture_canvas.id="aa"
@@ -78,30 +77,44 @@ var captureImage = function(x, y, width,height) {
     context.drawImage(local_video,0,0,whole_picture_canvas.width, whole_picture_canvas.height);
 
     var captured_canvas = document.createElement("canvas");
+
     captured_canvas.width=width*2;
     captured_canvas.height = height*2;
     console.log(x,y,width,height);
-    var imageData = whole_picture_canvas.getContext('2d').getImageData(x*2, y*2,width*2,height*2)
+    var imageData = whole_picture_canvas.getContext('2d').getImageData(x*2, y*2,width*2,height*2);//hack for retina
     captured_canvas.getContext('2d').putImageData(imageData,0,0);
 
     var img = document.createElement("img");
+    var canvasID = 'canvas' + $('canvas').length;
+    img.id = canvasID;
     img.src = captured_canvas.toDataURL();
     $('body').prepend(img);
 //    $('body').prepend(whole_picture_canvas);
 //    $('body').prepend(captured_canvas);
+
+    var $div = $('#note');
+    $('#' + canvasID)
+        .drag("start", function (ev, dd) {
+            dd.limit = $div.offset();
+            dd.limit.bottom = dd.limit.top + $div.outerHeight() - $(this).outerHeight();
+            dd.limit.right = dd.limit.left + $div.outerWidth() - $(this).outerWidth();
+        })
+        .drag(function (ev, dd) {
+            $(this).css({
+                top: Math.min(dd.limit.bottom, Math.max(dd.limit.top, dd.offsetY)),
+                left: Math.min(dd.limit.right, Math.max(dd.limit.left, dd.offsetX))
+            });
+        });
+    $('#' + canvasID).css('cursor', 'move');
+    $('#' + canvasID).css('position', 'absolute');
+    $('#' + canvasID).css('z-index', '998');
+    $('#' + canvasID).css('left', ((640 - x*2 - width*2) / 640) * $(document).width() * 0.68 + $(document).width() * 0.28 + 'px');
+    $('#' + canvasID).css('top', (y*2 / 480) * $(document).height() * 0.9 + 'px');
+    $('#' + canvasID).css('border-radius', '10px');
+
 };
 
-function capture_1(id,x, y, width,height){
-    var captured_canvas = document.createElement("canvas");
-    var whole_picture_canvas = document.getElementById(id)
-    captured_canvas.width=width;
-    captured_canvas.height = height;
-    var imageData = whole_picture_canvas.getContext('2d').getImageData(x,y,width,height)
-    captured_canvas.getContext('2d').putImageData(imageData,0,0);
-    var img = document.createElement("img");
-    img.src = captured_canvas.toDataURL();
-    $('body').prepend(img);
-}
+
 
 function initGUIControllers(tracker) {
     // GUI Controllers
